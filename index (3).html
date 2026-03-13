@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Intelligence — Boost Innovation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — High-Contrast Military Palette
+═══════════════════════════════════════════════════ */
+:root {
+  --black:         #04070d;
+  --deep:          #080e1a;
+  --panel:         #0e1624;
+  --panel2:        #111c2e;
+  --border:        #1f3050;
+  --border-bright: #2d4a78;
+  --boost-blue:    #1a78ff;
+  --boost-cyan:    #00e5ff;
+  --boost-orange:  #ff5c1a;
+  --boost-gold:    #ffc940;
+  --text-primary:  #ffffff;
+  --text-bright:   #e8f4ff;
+  --text-secondary:#b8cde8;
+  --text-muted:    #6a8aaa;
+  --text-dim:      #4a6480;
+  --success:       #1aff8c;
+  --warn:          #ffc940;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--black);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+.bi-nav {
+  position: sticky; top: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px clamp(16px,5vw,80px);
+  background: rgba(4,7,13,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.bi-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: 0.12em;
+  color: var(--text-primary); text-decoration: none;
+}
+.bi-logo span { color: var(--boost-cyan); }
+.bi-nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--boost-cyan); text-decoration: none;
+  border: 1px solid var(--boost-cyan);
+  padding: 9px 20px; transition: all 0.2s;
+}
+.bi-nav-cta:hover { background: var(--boost-cyan); color: var(--black); }
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+.bi-hero {
+  position: relative; overflow: hidden;
+  padding: clamp(60px,10vw,120px) clamp(16px,5vw,80px) clamp(60px,8vw,100px);
+  min-height: 85vh;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--deep);
+  border-bottom: 2px solid var(--border-bright);
+}
+.bi-hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(29,120,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29,120,255,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.bi-hero-glow {
+  position: absolute; top: -60px; right: -80px;
+  width: 560px; height: 560px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bi-hero-glow2 {
+  position: absolute; bottom: -40px; left: 10%;
+  width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,92,26,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bi-content-cap { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+.bi-hero-tag {
+  color: #00e5ff;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--boost-cyan);
+  border: 1px solid rgba(0,229,255,0.3);
+  padding: 7px 16px; margin-bottom: 28px;
+}
+.bi-hero-tag::before {
+  content: ''; display: block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--boost-cyan);
+  animation: bpulse 2s infinite;
+}
+@keyframes bpulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);} }
+.bi-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 9vw, 8.5rem);
+  line-height: 0.92; letter-spacing: 0.02em;
+  color: #ffffff; margin: 0 0 28px;
+}
+.bi-hero h1 em { font-style: normal; color: var(--boost-cyan); }
+.bi-hero-sub {
+  color: #b8cde8;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: var(--text-secondary); max-width: 640px;
+  margin: 0 0 40px; line-height: 1.7;
+}
+.bi-hero-sub strong { color: var(--text-bright); }
+.bi-hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--boost-orange); color: #fff;
+  padding: 16px 32px; text-decoration: none;
+  border: none; cursor: pointer; transition: all 0.2s; display: inline-block;
+}
+.btn-primary:hover { background: #ff7840; transform: translateY(-1px); }
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--text-secondary);
+  border: 1px solid var(--border-bright);
+  padding: 16px 32px; text-decoration: none;
+  transition: all 0.2s; display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--boost-cyan); color: var(--boost-cyan); }
+
+/* ═══════════════════════════════════════════════════
+   TICKER
+═══════════════════════════════════════════════════ */
+.bi-ticker {
+  background: var(--panel); border-bottom: 1px solid var(--border);
+  overflow: hidden; padding: 12px 0;
+}
+.bi-ticker-track {
+  display: flex; gap: 64px; width: max-content;
+  animation: bticker 30s linear infinite;
+}
+@keyframes bticker { from{transform:translateX(0);}to{transform:translateX(-50%);} }
+.bi-tick { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+.bi-tick-label { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); }
+.bi-tick-val { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.08em; color:var(--boost-cyan); }
+
+/* ═══════════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════════ */
+.bi-section {
+  padding: clamp(60px,8vw,100px) clamp(16px,5vw,80px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bi-section > .bi-content-cap,
+.bi-section > .bi-two-col,
+.bi-section > .bi-upload-grid,
+.bi-section > h2,
+.bi-section > p {
+  width: 100%;
+}
+.bi-section.dark { background: var(--deep); }
+.bi-section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--boost-orange); margin-bottom: 16px;
+}
+.bi-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  letter-spacing: 0.03em; color: var(--text-primary);
+  margin: 0 0 20px; line-height: 1;
+}
+.bi-lead {
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  color: var(--text-secondary); max-width: 680px; margin-bottom: 48px; line-height: 1.75;
+}
+.bi-lead strong { color: var(--text-bright); }
+
+/* ═══════════════════════════════════════════════════
+   FEATURE CARDS
+═══════════════════════════════════════════════════ */
+.bi-cards {
+  display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 1px; background: var(--border);
+}
+.bi-card {
+  background: var(--panel); padding: 36px 32px;
+  position: relative; overflow: hidden; transition: background 0.2s;
+}
+.bi-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg,var(--boost-blue),var(--boost-cyan));
+  opacity:0; transition:opacity 0.2s;
+}
+.bi-card:hover { background: var(--panel2); }
+.bi-card:hover::before { opacity:1; }
+.bi-card-icon { font-size:1.8rem; margin-bottom:16px; }
+.bi-card h3 {
+  font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.08em;
+  color:var(--text-bright); margin:0 0 12px;
+}
+.bi-card p { font-size:0.9rem; color:var(--text-muted); line-height:1.65; margin:0; }
+
+/* ═══════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════ */
+.bi-stats {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1px; background:var(--border);
+}
+.bi-stat { background:var(--panel2); padding:40px 32px; text-align:center; }
+.bi-stat-num {
+  font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,5vw,4rem);
+  color:var(--boost-cyan); letter-spacing:0.04em; display:block;
+}
+.bi-stat-desc {
+  font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-muted); margin-top:8px; display:block;
+}
+
+/* ═══════════════════════════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════════════════════════ */
+.bi-steps {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:32px; margin-top:48px;
+}
+.bi-step { border-left:2px solid var(--border-bright); padding-left:24px; }
+.bi-step-num {
+  font-family:'DM Mono',monospace; font-size:0.85rem; letter-spacing:0.14em;
+  color:var(--boost-orange); margin-bottom:10px; display:block; font-weight:700;
+}
+.bi-step h4 {
+  font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.06em;
+  color:var(--text-bright); margin:0 0 10px;
+}
+.bi-step p { font-size:0.9rem; color:var(--text-muted); margin:0; line-height:1.65; }
+
+/* ═══════════════════════════════════════════════════
+   ACCOUNT CTA
+═══════════════════════════════════════════════════ */
+.bi-two-col {
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;
+}
+.bi-cta-steps { list-style:none; margin:0; padding:0; }
+.bi-cta-steps li {
+  display:flex; gap:16px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--border);
+  font-size:0.95rem; color:var(--text-secondary);
+}
+.bi-cta-steps li:last-child { border-bottom:none; }
+.bi-cta-steps li strong { color: var(--text-bright); display: block; }
+.bi-cta-num {
+  font-family:'Bebas Neue',sans-serif; font-size:1.4rem;
+  color:var(--boost-cyan); flex-shrink:0; line-height:1;
+}
+.bi-form-wrap {
+  background:var(--panel2); border:1px solid var(--border-bright); padding:36px 32px;
+}
+.bi-form-title {
+  font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.06em;
+  color:var(--text-primary); margin:0 0 6px;
+}
+.bi-form-subtitle { font-size:0.9rem; color:var(--text-muted); margin:0 0 28px; }
+.bi-cta-btn {
+  display:block; width:100%;
+  background:linear-gradient(135deg,var(--boost-orange),#c94400);
+  color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.9rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:17px; text-align:center; text-decoration:none;
+  border:none; cursor:pointer; transition:opacity 0.2s; margin-bottom:16px;
+}
+.bi-cta-btn:hover { opacity:0.88; }
+.bi-trust-items { display:flex; flex-direction:column; gap:8px; }
+.bi-trust-item {
+  display:flex; align-items:center; gap:10px;
+  font-size:0.82rem; color:var(--text-muted);
+  font-family:'DM Mono',monospace; letter-spacing:0.04em;
+}
+.bi-trust-item::before { content:'✓'; color:var(--success); flex-shrink:0; }
+
+/* ═══════════════════════════════════════════════════
+   FREE TRIAL UPLOAD
+═══════════════════════════════════════════════════ */
+.bi-upload-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:40px;
+}
+.bi-drop-zone {
+  background:var(--panel2); border:2px dashed var(--border-bright);
+  padding:48px 32px; text-align:center; cursor:pointer;
+  transition:all 0.2s; position:relative;
+}
+.bi-drop-zone:hover, .bi-drop-zone.drag-over {
+  border-color:var(--boost-cyan); background:rgba(0,229,255,0.04);
+}
+.bi-drop-icon { font-size:3rem; margin-bottom:16px; display:block; }
+.bi-drop-zone h3 {
+  font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.08em;
+  color:var(--text-bright); margin:0 0 10px;
+}
+.bi-drop-zone p { font-size:0.9rem; color:var(--text-muted); margin:0 0 8px; }
+.bi-drop-types {
+  font-family:'DM Mono',monospace; font-size:0.66rem;
+  letter-spacing:0.08em; color:var(--text-dim); text-transform:uppercase;
+}
+.bi-file-input {
+  position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+}
+#bi-file-name {
+  margin-top:14px; font-size:0.85rem; color:var(--success); font-weight:600; display:none;
+}
+
+/* Progress */
+#bi-progress {
+  display:none; margin-top:14px; background:var(--panel2);
+  border:1px solid var(--border-bright); padding:20px;
+}
+.bi-prog-label {
+  font-family:'DM Mono',monospace; font-size:0.72rem;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--boost-cyan); margin-bottom:10px;
+}
+.bi-prog-track { height:4px; background:var(--border); overflow:hidden; margin-bottom:16px; }
+.bi-prog-fill {
+  height:100%; width:0%;
+  background:linear-gradient(90deg,var(--boost-blue),var(--boost-cyan)); transition:width 0.6s ease;
+}
+.bi-prog-steps { display:flex; flex-direction:column; gap:8px; }
+.bi-prog-step {
+  display:flex; align-items:center; gap:10px; font-size:0.82rem;
+  color:var(--text-dim); font-family:'DM Mono',monospace; letter-spacing:0.04em; transition:color 0.3s;
+}
+.bi-prog-step.active { color:var(--boost-cyan); }
+.bi-prog-step.done   { color:var(--success); }
+.bi-prog-dot {
+  width:6px; height:6px; border-radius:50%; background:var(--border); flex-shrink:0; transition:background 0.3s;
+}
+.bi-prog-step.active .bi-prog-dot { background:var(--boost-cyan); animation:bpulse 1.2s infinite; }
+.bi-prog-step.done   .bi-prog-dot { background:var(--success); }
+
+/* Analysis Options */
+.bi-options { background:var(--panel2); border:1px solid var(--border); padding:32px; }
+.bi-options h3 {
+  font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:0.08em;
+  color:var(--text-bright); margin:0 0 24px;
+}
+.bi-opt-group { margin-bottom:22px; }
+.bi-opt-label {
+  display:block; font-family:'DM Mono',monospace;
+  font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:10px;
+}
+.bi-toggles { display:flex; flex-wrap:wrap; gap:8px; }
+.bi-toggle {
+  font-family:'DM Mono',monospace; font-size:0.76rem; letter-spacing:0.06em; text-transform:uppercase;
+  background:var(--panel); border:1px solid var(--border);
+  color:var(--text-muted); padding:8px 14px; cursor:pointer; transition:all 0.15s;
+}
+.bi-toggle:hover { border-color:var(--border-bright); color:var(--text-secondary); }
+.bi-toggle.active {
+  background:rgba(26,120,255,0.15); border-color:var(--boost-blue); color:var(--boost-cyan);
+}
+.bi-range-wrap { margin-bottom:28px; }
+.bi-range-wrap input[type=range] {
+  width:100%; accent-color:var(--boost-cyan); margin:10px 0 8px; cursor:pointer;
+}
+.bi-range-labels {
+  display:flex; justify-content:space-between;
+  font-family:'DM Mono',monospace; font-size:0.64rem;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
+}
+#bi-depth-info {
+  margin-top:10px; padding:10px 14px;
+  background:var(--panel); border:1px solid var(--border);
+  font-family:'DM Mono',monospace; font-size:0.76rem; color:var(--text-secondary);
+}
+#bi-depth-name { color:var(--boost-cyan); }
+.bi-analyze-btn {
+  width:100%; margin-top:8px;
+  background:linear-gradient(135deg,var(--boost-orange),#c94400);
+  color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.9rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:16px; border:none; cursor:pointer; transition:opacity 0.2s;
+}
+.bi-analyze-btn:hover { opacity:0.88; }
+.bi-demo-divider { height:1px; background:var(--border); margin:20px 0 18px; }
+.bi-demo-heading {
+  font-family:'DM Mono',monospace; font-size:0.66rem;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;
+}
+.bi-demo-notice {
+  margin-top:16px; padding:14px 16px;
+  background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.2);
+  display:flex; gap:10px; align-items:flex-start;
+}
+.bi-demo-notice-icon { color:var(--boost-cyan); flex-shrink:0; font-weight:700; }
+.bi-demo-notice-txt { font-size:0.82rem; color:var(--text-muted); line-height:1.6; }
+.bi-demo-notice-txt strong { color:var(--text-secondary); }
+
+/* ═══════════════════════════════════════════════════
+   REPORT
+═══════════════════════════════════════════════════ */
+#bi-report {
+  display:none; margin-top:40px;
+  background:var(--panel2); border:1px solid var(--border-bright); overflow:hidden;
+}
+.bi-report-header {
+  background:var(--panel); border-bottom:1px solid var(--border-bright);
+  padding:24px 32px; display:flex;
+  justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;
+}
+.bi-report-logo {
+  font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:0.1em; color:var(--text-primary);
+}
+.bi-report-logo span { color:var(--boost-cyan); }
+.bi-report-sub {
+  font-family:'DM Mono',monospace; font-size:0.68rem;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--boost-orange); margin-top:4px;
+}
+.bi-report-meta {
+  font-family:'DM Mono',monospace; font-size:0.7rem;
+  color:var(--text-muted); line-height:1.8; text-align:right;
+}
+#bi-pdf-cta {
+  display:none; padding:18px 32px;
+  background:rgba(26,120,255,0.08); border-bottom:1px solid rgba(26,120,255,0.25);
+  align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+}
+.bi-pdf-cta-label { font-size:0.9rem; color:var(--text-secondary); }
+.bi-pdf-cta-label strong { color:var(--text-primary); }
+.bi-pdf-dl-btn {
+  background:var(--boost-blue); color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase;
+  padding:11px 24px; border:none; cursor:pointer; transition:opacity 0.2s;
+}
+.bi-pdf-dl-btn:hover { opacity:0.85; }
+.bi-report-body { padding:32px; }
+.bi-scores {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border); margin-bottom:32px;
+}
+.bi-score-box { background:var(--panel); padding:24px 16px; text-align:center; }
+.bi-score-val {
+  font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:0.04em; display:block; line-height:1;
+}
+.bi-score-val.high { color:var(--success); }
+.bi-score-val.med  { color:var(--boost-gold); }
+.bi-score-val.low  { color:var(--boost-orange); }
+.bi-score-label {
+  font-family:'DM Mono',monospace; font-size:0.64rem;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); margin-top:8px; display:block;
+}
+
+/* Locked content */
+#bi-locked-content { position:relative; }
+#bi-locked-content.bi-locked { filter:blur(5px); opacity:0.55; pointer-events:none; user-select:none; }
+
+#bi-lock-overlay {
+  display:none; position:absolute; inset:0;
+  flex-direction:column; align-items:center; justify-content:center;
+  background:linear-gradient(to bottom,rgba(4,7,13,0) 0%,rgba(4,7,13,0.78) 28%,rgba(4,7,13,0.97) 55%);
+  padding:40px 24px; text-align:center; z-index:10;
+}
+.bi-lock-icon { font-size:2.8rem; margin-bottom:18px; }
+.bi-lock-title {
+  font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:0.06em;
+  color:var(--text-primary); margin-bottom:12px;
+}
+.bi-lock-sub { font-size:0.95rem; color:var(--text-secondary); max-width:440px; margin-bottom:28px; }
+.bi-lock-items { margin-bottom:28px; display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
+.bi-lock-item {
+  display:flex; align-items:center; gap:12px; font-size:0.9rem; color:var(--text-secondary);
+}
+.bi-lock-badge {
+  width:22px; height:22px; border:1px solid var(--border-bright);
+  display:flex; align-items:center; justify-content:center; font-size:0.7rem; flex-shrink:0;
+}
+.bi-unlock-btn {
+  background:linear-gradient(135deg,var(--boost-orange),#c94400);
+  color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.88rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:16px 40px; border:none; cursor:pointer; transition:opacity 0.2s; margin-bottom:10px;
+}
+.bi-unlock-btn:hover { opacity:0.88; }
+.bi-lock-fine { font-size:0.76rem; color:var(--text-dim); }
+
+/* Report sections */
+.bi-rep-section { margin-bottom:28px; }
+.bi-rep-section-title {
+  font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--boost-cyan); margin-bottom:14px;
+  padding-bottom:8px; border-bottom:1px solid var(--border);
+}
+.bi-finding {
+  display:flex; gap:12px; margin-bottom:12px;
+  background:rgba(255,255,255,0.02); border:1px solid var(--border); padding:14px 16px;
+}
+.bi-finding-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.bi-finding-text { font-size:0.88rem; color:var(--text-secondary); line-height:1.65; }
+.bi-finding-text strong { color:var(--text-bright); }
+.bi-timeline-item { margin-bottom:14px; }
+.bi-tl-row {
+  display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.74rem;
+  letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px;
+}
+.bi-tl-row span:last-child { color:var(--boost-cyan); }
+.bi-tl-track { height:8px; background:var(--deep); border:1px solid var(--border-bright); overflow:hidden; }
+.bi-tl-fill { height:100%; background:linear-gradient(90deg,var(--boost-blue),var(--boost-cyan)); transition:width 1s ease; }
+.bi-tl-note {
+  font-size:0.74rem; color:var(--text-muted); font-family:'DM Mono',monospace;
+  text-transform:uppercase; letter-spacing:0.1em; margin-top:4px;
+}
+.bi-recs {
+  background:rgba(26,120,255,0.06); border:1px solid rgba(26,120,255,0.25); padding:24px; margin-top:16px;
+}
+.bi-recs-title {
+  font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.11em;
+  color:var(--boost-cyan); margin-bottom:14px; text-transform:uppercase;
+}
+.bi-rec { display:flex; gap:9px; margin-bottom:10px; font-size:0.88rem; color:var(--text-secondary); line-height:1.55; }
+.bi-rec::before { content:'→'; color:var(--boost-orange); flex-shrink:0; }
+.bi-report-footer {
+  border-top:1px solid var(--border-bright); padding:18px 32px;
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--panel);
+}
+.bi-report-footer-txt {
+  font-family:'DM Mono',monospace; font-size:0.7rem;
+  color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.13em;
+}
+.bi-report-footer-txt strong { color:var(--boost-cyan); }
+.bi-dl-btn {
+  background:transparent; border:1px solid var(--boost-blue); color:var(--boost-cyan);
+  font-family:'DM Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em;
+  padding:9px 18px; cursor:pointer; transition:all 0.2s;
+}
+.bi-dl-btn:hover { background:var(--boost-blue); color:#fff; }
+
+/* ═══════════════════════════════════════════════════
+   PAYWALL MODAL
+═══════════════════════════════════════════════════ */
+#bi-paywall-modal {
+  display:none; position:fixed; inset:0; z-index:9000;
+  background:rgba(4,7,13,0.88); align-items:center; justify-content:center; padding:20px;
+}
+.bi-paywall-box {
+  background:var(--panel2); border:1px solid var(--border-bright);
+  max-width:520px; width:100%; position:relative; animation:bmodalIn 0.3s ease;
+}
+@keyframes bmodalIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.bi-paywall-top { background:var(--panel); padding:24px 28px; border-bottom:1px solid var(--border); }
+.bi-paywall-tag {
+  font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--boost-orange); margin-bottom:8px;
+}
+.bi-paywall-title {
+  font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.06em; color:var(--text-primary); margin:0;
+}
+.bi-paywall-body { padding:24px 28px; }
+.bi-paywall-list { list-style:none; margin:0 0 24px; padding:0; display:flex; flex-direction:column; gap:12px; }
+.bi-paywall-list li { display:flex; align-items:center; gap:12px; font-size:0.9rem; color:var(--text-secondary); }
+.bi-paywall-list .pi {
+  width:24px; height:24px; border:1px solid var(--border-bright);
+  display:flex; align-items:center; justify-content:center; font-size:0.75rem; flex-shrink:0;
+}
+.bi-paywall-cta {
+  display:block; width:100%;
+  background:linear-gradient(135deg,var(--boost-orange),#c94400);
+  color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.9rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:16px; border:none; cursor:pointer; transition:opacity 0.2s; margin-bottom:12px;
+}
+.bi-paywall-cta:hover { opacity:0.88; }
+.bi-paywall-fine { font-size:0.76rem; color:var(--text-dim); text-align:center; }
+.bi-paywall-close {
+  position:absolute; top:14px; right:14px;
+  background:var(--panel); border:1px solid var(--border);
+  color:var(--text-muted); width:28px; height:28px;
+  cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;
+}
+.bi-paywall-close:hover { color:var(--text-primary); }
+
+/* ═══════════════════════════════════════════════════
+   PROFILE MODAL
+═══════════════════════════════════════════════════ */
+#bi-profile-modal {
+  display:none; position:fixed; inset:0; z-index:9001;
+  background:rgba(4,7,13,0.9); align-items:center; justify-content:center; padding:20px;
+}
+.bi-profile-box {
+  background:var(--panel2); border:1px solid var(--border-bright);
+  max-width:480px; width:100%; position:relative; animation:bmodalIn 0.3s ease;
+}
+.bi-profile-top { background:var(--panel); border-bottom:1px solid var(--border); padding:20px 28px; }
+.bi-profile-tag {
+  font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--boost-orange);
+}
+.bi-profile-title {
+  font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em;
+  color:var(--text-primary); margin:6px 0 0;
+}
+.bi-profile-body { padding:24px 28px; }
+.bi-profile-sub { font-size:0.88rem; color:var(--text-muted); margin:0 0 22px; line-height:1.6; }
+.bi-profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.bi-field label {
+  display:block; font-family:'DM Mono',monospace;
+  font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px;
+}
+.bi-field input, .bi-field select {
+  width:100%; background:var(--panel); border:1px solid var(--border-bright);
+  color:var(--text-primary); font-family:'DM Sans',sans-serif;
+  font-size:0.9rem; padding:10px 12px; outline:none; transition:border-color 0.2s;
+}
+.bi-field input:focus, .bi-field select:focus { border-color:var(--boost-cyan); }
+.bi-profile-btn {
+  width:100%; margin-top:20px;
+  background:linear-gradient(135deg,var(--boost-orange),#c94400);
+  color:#fff; font-family:'DM Mono',monospace;
+  font-size:0.88rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  padding:15px; border:none; cursor:pointer; transition:opacity 0.2s;
+}
+.bi-profile-btn:hover { opacity:0.88; }
+.bi-profile-skip {
+  display:block; text-align:center; margin-top:10px;
+  font-size:0.78rem; color:var(--text-dim); background:none; border:none;
+  cursor:pointer; font-family:'DM Mono',monospace; text-decoration:underline;
+}
+.bi-profile-privacy {
+  margin-top:16px; padding:12px 14px;
+  background:rgba(255,255,255,0.02); border:1px solid var(--border);
+  font-size:0.76rem; color:var(--text-dim); line-height:1.6;
+}
+.bi-profile-close {
+  position:absolute; top:14px; right:14px;
+  background:var(--panel); border:1px solid var(--border);
+  color:var(--text-muted); width:28px; height:28px;
+  cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;
+}
+.bi-profile-close:hover { color:var(--text-primary); }
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+.bi-footer {
+  background:var(--deep); border-top:2px solid var(--border-bright);
+  padding:40px clamp(16px,5vw,80px);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+}
+.bi-footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.13em; color:var(--text-primary); }
+.bi-footer-logo span { color:var(--boost-cyan); }
+.bi-footer-copy { font-size:0.78rem; color:var(--text-muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:0.1em; }
+
+/* ═══════════════════════════════════════════════════
+   SCROLL FADE
+═══════════════════════════════════════════════════ */
+/* fade css removed */
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media(max-width:1023px){
+  .bi-two-col{grid-template-columns:1fr;gap:40px;}
+  .bi-scores{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:767px){
+  .bi-hero h1{font-size:clamp(3rem,12vw,5rem);}
+  .bi-upload-grid{grid-template-columns:1fr;}
+  .bi-cards{grid-template-columns:1fr;}
+  .bi-steps{grid-template-columns:1fr;}
+  .bi-stats{grid-template-columns:repeat(2,1fr);}
+  .bi-scores{grid-template-columns:repeat(2,1fr);}
+  .bi-hero-actions{flex-direction:column;}
+  .btn-primary,.btn-ghost{width:100%;text-align:center;}
+  .bi-report-header{flex-direction:column;}
+  .bi-report-meta{text-align:left;}
+  .bi-report-body,.bi-report-header,.bi-report-footer{padding:20px;}
+}
+@media(max-width:479px){
+  .bi-scores{grid-template-columns:repeat(2,1fr);}
+  .bi-profile-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="bi-nav">
+  <a href="https://www.boostinnovation.ca" class="bi-logo">BOOST <span>INNOVATION</span></a>
+  <a href="https://buy.stripe.com/dRmcN5aNh3lGeKF7fo4c800" class="bi-nav-cta">Get Started Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="bi-hero">
+  <div class="bi-hero-grid"></div>
+  <div class="bi-hero-glow"></div>
+  <div class="bi-hero-glow2"></div>
+  <div class="bi-content-cap">
+    <div class="bi-hero-tag">Performance Intelligence Platform — Powered by AI</div>
+    <h1>READ THE <em>ROOM.</em><br>WIN THE FIELD.</h1>
+    <p class="bi-hero-sub">Every great team has a moment where something shifts — a glance, a posture, a heartbeat before a decision. <strong>Most coaches never see it.</strong> Boost Intelligence does. Upload your footage. Let the science speak.</p>
+    <div class="bi-hero-actions">
+      <a href="#bi-try-free" class="btn-primary">Try It Free — Upload Your Footage</a>
+      <a href="#bi-how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="bi-ticker">
+  <div class="bi-ticker-track">
+    <span class="bi-tick"><span class="bi-tick-label">Facial Cues Tracked</span><span class="bi-tick-val">68+</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Body Language Signals</span><span class="bi-tick-val">120+</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Accuracy Rate</span><span class="bi-tick-val">94.7%</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Analysis Time</span><span class="bi-tick-val">&lt; 90 SEC</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Engagement Markers</span><span class="bi-tick-val">31</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Stress Indicators</span><span class="bi-tick-val">24</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Facial Cues Tracked</span><span class="bi-tick-val">68+</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Body Language Signals</span><span class="bi-tick-val">120+</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Accuracy Rate</span><span class="bi-tick-val">94.7%</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Analysis Time</span><span class="bi-tick-val">&lt; 90 SEC</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Engagement Markers</span><span class="bi-tick-val">31</span></span>
+    <span class="bi-tick"><span class="bi-tick-label">Stress Indicators</span><span class="bi-tick-val">24</span></span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="bi-section dark">
+  <div class="bi-content-cap">
+    <div class="bi-section-tag">The Problem</div>
+    <h2 class="bi-h2">You're watching the wrong data.</h2>
+    <p class="bi-lead">Coaches and leaders have been trained to listen to what people say. <strong>That's a mistake.</strong> Research shows that 55% of communication is body language, 38% is tone — and only 7% is the actual words. You've been optimizing the 7%. Boost Intelligence gives you the other 93%.</p>
+    <div class="bi-cards">
+      <div class="bi-card"><div class="bi-card-icon">🎯</div><h3>Individual Performance</h3><p>Pinpoint confidence, stress, disengagement, and peak-state indicators in any individual. Know who's ready to perform before they step on the floor.</p></div>
+      <div class="bi-card"><div class="bi-card-icon">🔗</div><h3>Group Dynamics</h3><p>Map the energy of a room. Track synchrony, tension, dominant voices, and moments of collective buy-in or disconnection in real time.</p></div>
+      <div class="bi-card"><div class="bi-card-icon">📊</div><h3>Gold-Standard Recognition</h3><p>Built on Ekman's FACS facial coding system — the same framework used by the FBI and elite performance coaches worldwide. Not guesswork.</p></div>
+      <div class="bi-card"><div class="bi-card-icon">⚡</div><h3>Instant Actionable Reports</h3><p>Upload your footage and get a timestamped, narrative-driven report with specific coaching interventions in under two minutes.</p></div>
+      <div class="bi-card"><div class="bi-card-icon">🏆</div><h3>Built for Winners</h3><p>Used by coaches, HR teams, trainers, and organizational leaders who know the difference between good and great lives in the details nobody else bothers to find.</p></div>
+      <div class="bi-card"><div class="bi-card-icon">🔒</div><h3>Private &amp; Secure</h3><p>Bank-grade encryption, zero data retention post-analysis, and full compliance with Canadian privacy law. What happens in your locker room stays there.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="bi-section">
+  <div class="bi-content-cap">
+    <div class="bi-stats">
+      <div class="bi-stat"><span class="bi-stat-num">55%</span><span class="bi-stat-desc">of communication is body language</span></div>
+      <div class="bi-stat"><span class="bi-stat-num">7×</span><span class="bi-stat-desc">faster decision-making with visual cues</span></div>
+      <div class="bi-stat"><span class="bi-stat-num">38%</span><span class="bi-stat-desc">of a message is carried in tone &amp; posture</span></div>
+      <div class="bi-stat"><span class="bi-stat-num">94%</span><span class="bi-stat-desc">accuracy on validated emotion recognition</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="bi-section dark" id="bi-how">
+  <div class="bi-content-cap">
+    <div class="bi-section-tag">The Process</div>
+    <h2 class="bi-h2">Three steps to clarity.</h2>
+    <p class="bi-lead">We stripped everything down to what matters. No tutorials, no learning curve. <strong>If you can press record, you can use Boost Intelligence.</strong></p>
+    <div class="bi-steps">
+      <div class="bi-step"><span class="bi-step-num">Step 01</span><h4>Upload Your Footage</h4><p>Drag and drop any video — practice sessions, meetings, huddles, interviews, presentations. All standard formats up to 2GB.</p></div>
+      <div class="bi-step"><span class="bi-step-num">Step 02</span><h4>Configure Your Analysis</h4><p>Select your analysis type, focus area, context, and depth. Our AI calibrates its behavioral models to your specific situation.</p></div>
+      <div class="bi-step"><span class="bi-step-num">Step 03</span><h4>Hit Analyze</h4><p>Our AI cross-references your footage against gold-standard behavioral databases and generates a timestamped performance intelligence report in under 90 seconds.</p></div>
+      <div class="bi-step"><span class="bi-step-num">Step 04</span><h4>Act on the Insights</h4><p>Every report includes specific, actionable coaching recommendations. Not data for its own sake — a roadmap to better performance, starting today.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNT CTA -->
+<section class="bi-section" id="bi-account">
+  <div class="bi-content-cap">
+    <div class="bi-two-col">
+      <div>
+        <div class="bi-section-tag">Get Access</div>
+        <h2 class="bi-h2">Ready to see the truth.</h2>
+        <p class="bi-lead">Create your free account in 60 seconds. No credit card needed to start. Your first analyses are on us — because once you see what your team is really communicating, you won't be able to unsee it.</p>
+        <ul class="bi-cta-steps">
+          <li><span class="bi-cta-num">1</span><div><strong>Create your account</strong>Takes 60 seconds. Name, email, done.</div></li>
+          <li><span class="bi-cta-num">2</span><div><strong>Unlock the platform</strong>Simple one-time payment through our secure Stripe checkout.</div></li>
+          <li><span class="bi-cta-num">3</span><div><strong>Start analyzing</strong>Upload your first video and get your first performance intelligence report immediately.</div></li>
+        </ul>
+      </div>
+      <div>
+        <div class="bi-form-wrap">
+          <div class="bi-form-title">Get started free</div>
+          <div class="bi-form-subtitle">Join coaches and leaders using Boost Intelligence across Canada.</div>
+          <a href="https://buy.stripe.com/dRmcN5aNh3lGeKF7fo4c800" class="bi-cta-btn">Create free account →</a>
+          <div class="bi-trust-items">
+            <div class="bi-trust-item">No credit card required to start</div>
+            <div class="bi-trust-item">Secured by Stripe — bank-grade checkout</div>
+            <div class="bi-trust-item">Cancel or pause any time</div>
+            <div class="bi-trust-item">Compliant with Canadian privacy law</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TRIAL -->
+<section class="bi-section dark" id="bi-try-free">
+  <div class="bi-content-cap">
+    <div class="bi-section-tag">Free Preview</div>
+    <h2 class="bi-h2">Try it now. No signup needed.</h2>
+    <p class="bi-lead">Upload any video and get a real preview of your Performance Intelligence Report. <strong>See exactly what the platform reveals</strong> before you commit to anything.</p>
+
+    <div class="bi-upload-grid">
+      <!-- DROP ZONE -->
+      <div>
+        <div class="bi-drop-zone" id="bi-drop">
+          <input type="file" class="bi-file-input" accept="video/*" onchange="biFileSelect(this)">
+          <span class="bi-drop-icon">📹</span>
+          <h3>Drop Video Here</h3>
+          <p>Drag and drop your video file, or click to browse</p>
+          <div class="bi-drop-types">MP4 · MOV · AVI · MKV · WEBM — Max 2GB</div>
+        </div>
+        <div id="bi-file-name"></div>
+        <div id="bi-progress">
+          <div class="bi-prog-label">Running Analysis...</div>
+          <div class="bi-prog-track"><div class="bi-prog-fill" id="bi-prog-fill"></div></div>
+          <div class="bi-prog-steps">
+            <div class="bi-prog-step" id="ps-extract"><span class="bi-prog-dot"></span>Extracting frames</div>
+            <div class="bi-prog-step" id="ps-face"><span class="bi-prog-dot"></span>Facial landmark mapping</div>
+            <div class="bi-prog-step" id="ps-body"><span class="bi-prog-dot"></span>Body language classification</div>
+            <div class="bi-prog-step" id="ps-emotion"><span class="bi-prog-dot"></span>Emotion sequence analysis</div>
+            <div class="bi-prog-step" id="ps-group"><span class="bi-prog-dot"></span>Group dynamic modeling</div>
+            <div class="bi-prog-step" id="ps-report"><span class="bi-prog-dot"></span>Generating report</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTIONS -->
+      <div class="bi-options">
+        <h3>Analysis Configuration</h3>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Analysis Type</span>
+          <div class="bi-toggles" id="tg-type">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-type')">Individual</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-type')">Group Dynamics</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-type')">Both</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Focus Area</span>
+          <div class="bi-toggles" id="tg-focus">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-focus')">Performance</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-focus')">Engagement</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-focus')">Stress / Pressure</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-focus')">Leadership</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Context</span>
+          <div class="bi-toggles" id="tg-ctx">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-ctx')">Sport / Athletic</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-ctx')">Corporate / Meeting</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-ctx')">Training Session</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-ctx')">Interview</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Mental Focus Analysis</span>
+          <div class="bi-toggles" id="tg-mf">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-mf')">Include</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-mf')">Exclude</button>
+          </div>
+        </div>
+        <div class="bi-opt-group bi-range-wrap">
+          <span class="bi-opt-label">Analysis Depth</span>
+          <input type="range" min="1" max="3" value="2" id="bi-depth" oninput="biUpdateDepthLabel(this.value)">
+          <div class="bi-range-labels"><span>Standard</span><span>Detailed</span><span>Deep Dive</span></div>
+          <div id="bi-depth-info"><span id="bi-depth-name">Detailed Analysis</span> — <span id="bi-depth-desc">Full breakdown with all signal categories</span></div>
+        </div>
+
+        <div class="bi-demo-divider"></div>
+        <div class="bi-demo-heading">Subject Context — helps calibrate your results</div>
+
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Your Role</span>
+          <div class="bi-toggles" id="tg-role">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-role')">Coach</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-role')">Athlete</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-role')">HR / People</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-role')">Executive</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-role')">Trainer</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-role')">Researcher</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Industry / Sport</span>
+          <div class="bi-toggles" id="tg-industry">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-industry')">Team Sport</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-industry')">Individual Sport</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-industry')">Corporate</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-industry')">Education</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-industry')">Healthcare</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-industry')">Other</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Performance Level</span>
+          <div class="bi-toggles" id="tg-level">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-level')">Youth / Dev</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-level')">Amateur</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-level')">Semi-Pro</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-level')">Professional</button>
+          </div>
+        </div>
+        <div class="bi-opt-group">
+          <span class="bi-opt-label">Organization Size</span>
+          <div class="bi-toggles" id="tg-orgsize">
+            <button class="bi-toggle active" onclick="biToggle(this,'tg-orgsize')">Individual</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-orgsize')">Small (2–15)</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-orgsize')">Mid (16–100)</button>
+            <button class="bi-toggle" onclick="biToggle(this,'tg-orgsize')">Large (100+)</button>
+          </div>
+        </div>
+
+        <button class="bi-analyze-btn" onclick="biAnalyze()">ANALYZE FOOTAGE</button>
+
+        <div class="bi-demo-notice">
+          <span class="bi-demo-notice-icon">ℹ</span>
+          <span class="bi-demo-notice-txt">Free preview shows your <strong>Performance Score</strong>. Unlock the full report — facial analysis, body language signals, mental focus, timeline, and coaching recommendations.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT -->
+    <div id="bi-report">
+      <div class="bi-report-header">
+        <div>
+          <div class="bi-report-logo">BOOST <span>INNOVATION</span></div>
+          <div class="bi-report-sub">Performance Intelligence Report — Free Preview</div>
+        </div>
+        <div class="bi-report-meta" id="bi-report-meta"></div>
+      </div>
+
+      <div id="bi-pdf-cta">
+        <div class="bi-pdf-cta-label"><strong>Your full report is ready.</strong> Download a branded PDF to share, save, or review offline.</div>
+        <button class="bi-pdf-dl-btn" onclick="biDownloadPDF()">&#8595; Download PDF Report</button>
+      </div>
+
+      <div class="bi-report-body">
+        <div id="bi-scores" class="bi-scores"></div>
+
+        <div id="bi-locked-content">
+          <div class="bi-rep-section">
+            <div class="bi-rep-section-title">🔍 Facial Expression Analysis</div>
+            <div id="bi-facial"></div>
+          </div>
+          <div class="bi-rep-section">
+            <div class="bi-rep-section-title">🧍 Body Language Signals</div>
+            <div id="bi-body"></div>
+          </div>
+          <div class="bi-rep-section" id="bi-focus-section">
+            <div class="bi-rep-section-title">🧠 Mental Focus &amp; Concentration</div>
+            <div id="bi-focus"></div>
+          </div>
+          <div class="bi-rep-section">
+            <div class="bi-rep-section-title">📈 Performance Timeline</div>
+            <div id="bi-timeline"></div>
+          </div>
+          <div class="bi-recs">
+            <div class="bi-recs-title">⚡ Boost Coaching Recommendations</div>
+            <div id="bi-recs"></div>
+          </div>
+        </div>
+
+        <div id="bi-lock-overlay">
+          <div class="bi-lock-icon">🔒</div>
+          <div class="bi-lock-title">Your full report is ready</div>
+          <div class="bi-lock-sub">Facial expression analysis, body language signals, mental focus, performance timeline, and personalized coaching recommendations are all waiting.</div>
+          <div class="bi-lock-items">
+            <div class="bi-lock-item"><span class="bi-lock-badge">🔒</span>Facial Expression Analysis</div>
+            <div class="bi-lock-item"><span class="bi-lock-badge">🔒</span>Body Language Signals</div>
+            <div class="bi-lock-item"><span class="bi-lock-badge">🔒</span>Mental Focus &amp; Concentration</div>
+            <div class="bi-lock-item"><span class="bi-lock-badge">🔒</span>Performance Timeline</div>
+            <div class="bi-lock-item"><span class="bi-lock-badge">⚡</span>Personalized Coaching Recommendations</div>
+          </div>
+          <button class="bi-unlock-btn" onclick="biGoToStripe()">Unlock full report →</button>
+          <div class="bi-lock-fine">Free to create · No credit card required</div>
+        </div>
+      </div>
+
+      <div class="bi-report-footer">
+        <div class="bi-report-footer-txt">Generated by <strong>BOOST INTELLIGENCE</strong> · boostinnovation.ca</div>
+        <button class="bi-dl-btn" onclick="biDownloadPDF()">↓ Download Report</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PAYWALL MODAL -->
+<div id="bi-paywall-modal" onclick="biClosePaywall(event)">
+  <div class="bi-paywall-box">
+    <button class="bi-paywall-close" onclick="biClosePaywall()">✕</button>
+    <div class="bi-paywall-top">
+      <div class="bi-paywall-tag">Your report is waiting</div>
+      <div class="bi-paywall-title">Unlock Full Report</div>
+    </div>
+    <div class="bi-paywall-body">
+      <ul class="bi-paywall-list">
+        <li><span class="pi">🔒</span>Facial Expression Analysis — micro-expressions, confidence markers</li>
+        <li><span class="pi">🔒</span>Body Language Signals — posture index, power stance, gestures</li>
+        <li><span class="pi">🔒</span>Mental Focus &amp; Concentration — flow state windows, distraction events</li>
+        <li><span class="pi">🔒</span>Performance Timeline — timestamped peak windows, pressure spikes</li>
+        <li><span class="pi">⚡</span>Personalized Coaching Recommendations</li>
+      </ul>
+      <button class="bi-paywall-cta" onclick="biGoToStripe()">UNLOCK FULL REPORT →</button>
+      <div class="bi-paywall-fine">✓ No credit card needed &nbsp;·&nbsp; ✓ Canadian privacy law compliant</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="bi-profile-modal">
+  <div class="bi-profile-box">
+    <button class="bi-profile-close" onclick="biSkipProfile()">✕</button>
+    <div class="bi-profile-top">
+      <div class="bi-profile-tag">One last step</div>
+      <div class="bi-profile-title">Make your report more powerful.</div>
+    </div>
+    <div class="bi-profile-body">
+      <p class="bi-profile-sub">Tell us about yourself — we use this to benchmark your results and sharpen future analyses.</p>
+      <div class="bi-profile-grid">
+        <div class="bi-field"><label>First name</label><input id="prof-first" type="text" placeholder="Alex"></div>
+        <div class="bi-field"><label>Last name</label><input id="prof-last" type="text" placeholder="Chen"></div>
+      </div>
+      <div class="bi-field" style="margin-bottom:12px;"><label>Organization / Team / Club</label><input id="prof-org" type="text" placeholder="e.g. Calgary Flames, Acme Corp"></div>
+      <div class="bi-field" style="margin-bottom:12px;"><label>Specific sport or industry</label><input id="prof-sport" type="text" placeholder="e.g. Hockey, Basketball, Sales"></div>
+      <div class="bi-field"><label>How did you hear about us?</label>
+        <select id="prof-source">
+          <option value="">Select one...</option>
+          <option>Google / Search</option>
+          <option>Social media</option>
+          <option>Referral from a colleague</option>
+          <option>Podcast or media</option>
+          <option>Conference or event</option>
+          <option>Direct outreach from Boost</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <button class="bi-profile-btn" onclick="biSaveProfile()">Save profile &amp; download PDF →</button>
+      <button class="bi-profile-skip" onclick="biSkipProfile()">Skip — just download the PDF</button>
+      <div class="bi-profile-privacy">🔒 Your information is stored securely, never sold, and used only to improve your Boost Intelligence reports. Governed by Canadian privacy law (PIPEDA).</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bi-footer">
+  <div class="bi-footer-logo">BOOST <span>INNOVATION</span></div>
+  <div class="bi-footer-copy">© 2025 Boost Innovation · boostinnovation.ca · All Rights Reserved</div>
+</footer>
+
+<script>
+/* ── SUPABASE CLIENT ── */
+const SUPA_URL = '%%SUPABASE_URL%%';
+const SUPA_KEY = '%%SUPABASE_ANON_KEY%%';
+
+async function supaInsert(table, row) {
+  if (!SUPA_URL || SUPA_URL.indexOf('%%') !== -1) return;
+  try {
+    await fetch(SUPA_URL + '/rest/v1/' + table, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'apikey':        SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer':        'return=minimal'
+      },
+      body: JSON.stringify(row)
+    });
+  } catch(e) { console.warn('Supabase write failed:', e); }
+}
+
+async function biSaveAnalysis(data, paid) {
+  await supaInsert('analyses', {
+    id: data.id, file_name: data.file, type: data.type,
+    focus: data.focus, context: data.ctx, depth: data.depth,
+    mental_focus: data.mf, role: data.role, industry: data.industry,
+    level: data.level, org_size: data.orgSize, scores: data.scores, paid: paid||false
+  });
+}
+
+async function biSaveProfileToSupa(profile) {
+  await supaInsert('profiles', {
+    session_id: profile.sessionId, first_name: profile.firstName,
+    last_name: profile.lastName, org: profile.org, sport: profile.sport,
+    source: profile.source, role: profile.role, industry: profile.industry,
+    level: profile.level, org_size: profile.orgSize
+  });
+}
+
+
+/* ── SESSION STATE ── */
+const biSession = { id:null, reportData:null, paid:false, profile:null };
+
+/* scroll fade removed */
+
+/* ── DRAG & DROP ── */
+const biDrop = document.getElementById('bi-drop');
+biDrop.addEventListener('dragover',  e=>{e.preventDefault();biDrop.classList.add('drag-over');});
+biDrop.addEventListener('dragleave', ()=>biDrop.classList.remove('drag-over'));
+biDrop.addEventListener('drop', e=>{
+  e.preventDefault(); biDrop.classList.remove('drag-over');
+  if(e.dataTransfer.files[0]) biShowFile(e.dataTransfer.files[0].name);
+});
+function biFileSelect(inp){ if(inp.files[0]) biShowFile(inp.files[0].name); }
+function biShowFile(name){
+  const el = document.getElementById('bi-file-name');
+  el.textContent = '✓ '+name; el.style.display = 'block';
+}
+
+/* ── TOGGLES ── */
+function biToggle(btn,gid){
+  document.querySelectorAll('#'+gid+' .bi-toggle').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── DEPTH LABEL ── */
+const BI_DEPTH = {
+  1:{name:'Standard Analysis',  desc:'Core performance scores and key signal summary'},
+  2:{name:'Detailed Analysis',  desc:'Full breakdown with all signal categories'},
+  3:{name:'Deep Dive Analysis', desc:'Maximum depth — every signal, every second, every recommendation'},
+};
+function biUpdateDepthLabel(v){
+  document.getElementById('bi-depth-name').textContent = BI_DEPTH[v].name;
+  document.getElementById('bi-depth-desc').textContent = BI_DEPTH[v].desc;
+}
+
+/* ── SESSION ID ── */
+function biGenId(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let id='BI-';
+  for(let i=0;i<8;i++) id+=c[Math.floor(Math.random()*c.length)];
+  return id;
+}
+
+/* ── ANALYZE ── */
+function biAnalyze(){
+  const fn = document.getElementById('bi-file-name');
+  if(!fn.textContent){alert('Please upload a video file first.');return;}
+  const prog = document.getElementById('bi-progress');
+  const fill = document.getElementById('bi-prog-fill');
+  document.querySelectorAll('.bi-prog-step').forEach(s=>s.classList.remove('done','active'));
+  fill.style.width='0%';
+  prog.style.display='block';
+  prog.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const steps=[
+    {id:'ps-extract',pct:18, delay:0},
+    {id:'ps-face',   pct:38, delay:700},
+    {id:'ps-body',   pct:56, delay:1500},
+    {id:'ps-emotion',pct:72, delay:2400},
+    {id:'ps-group',  pct:87, delay:3300},
+    {id:'ps-report', pct:100,delay:4200},
+  ];
+  steps.forEach(({id,pct,delay},i)=>{
+    setTimeout(()=>{
+      if(i>0) document.getElementById(steps[i-1].id).classList.add('done');
+      document.getElementById(id).classList.add('active');
+      fill.style.width=pct+'%';
+    },delay);
+  });
+  setTimeout(()=>{
+    document.getElementById('ps-report').classList.add('done');
+    biGenerateReportData();
+    biRenderReport(biSession.reportData, true);
+  },5200);
+}
+
+/* ── GENERATE REPORT DATA ── */
+function biGenerateReportData(){
+  const now   = new Date();
+  const type  = document.querySelector('#tg-type   .bi-toggle.active')?.textContent||'Individual';
+  const focus = document.querySelector('#tg-focus  .bi-toggle.active')?.textContent||'Performance';
+  const ctx   = document.querySelector('#tg-ctx    .bi-toggle.active')?.textContent||'Sport / Athletic';
+  const mf    = document.querySelector('#tg-mf     .bi-toggle.active')?.textContent||'Include';
+  const depthV= parseInt(document.getElementById('bi-depth').value)||2;
+  const depth = ['','Standard','Detailed','Deep Dive'][depthV];
+  const file  = document.getElementById('bi-file-name').textContent.replace('✓ ','').trim();
+  const demo  = {
+    role:    document.querySelector('#tg-role     .bi-toggle.active')?.textContent?.trim()||'',
+    industry:document.querySelector('#tg-industry .bi-toggle.active')?.textContent?.trim()||'',
+    level:   document.querySelector('#tg-level    .bi-toggle.active')?.textContent?.trim()||'',
+    orgSize: document.querySelector('#tg-orgsize  .bi-toggle.active')?.textContent?.trim()||'',
+  };
+  const b = ()=>Math.floor(Math.random()*22+70);
+
+  const facialMap={
+    Performance:[
+      {i:'🟢',t:'<strong>Authentic Confidence Detected (0:12–1:44):</strong> Sustained Duchenne smile markers and reduced corrugator tension indicate genuine enthusiasm. Subject displays high-baseline confidence posture correlated with peak-state readiness.'},
+      {i:'🟡',t:'<strong>Micro-Expression Cluster at 2:18:</strong> A 0.3-second flash of contempt preceding a key decision moment. Suggests suppressed disagreement or self-doubt. Revisit with subject privately.'},
+      {i:'🟢',t:'<strong>Strong Eye Contact Patterns:</strong> 78% direct gaze during high-pressure moments — above the 65% benchmark for high-performing individuals in comparable contexts.'},
+      {i:'🔴',t:'<strong>Anxiety Cluster (3:55–4:22):</strong> Brow raise and lip compression consistent with anticipatory anxiety. May indicate pressure sensitivity in late-stage execution.'},
+    ],
+    Engagement:[
+      {i:'🟢',t:'<strong>High Positive Engagement (0:05–1:30):</strong> Symmetrical smile activation and head nodding consistent with authentic interest and active listening.'},
+      {i:'🟡',t:'<strong>Attention Shift at 2:45:</strong> Gaze aversion spikes to 42% for a 37-second window. Subject may be processing internally or disengaging.'},
+    ],
+    'Stress / Pressure':[
+      {i:'🔴',t:'<strong>Stress Cascade Detected (1:52–2:31):</strong> Sequential AU sequence — brow furrow, lip tighten, jaw clench — matches known stress signature in high-stakes environments.'},
+      {i:'🟢',t:'<strong>Recovery Speed: Excellent.</strong> Subject returns to baseline expression within 18 seconds of peak stress event — well within the elite 25-second benchmark.'},
+    ],
+    Leadership:[
+      {i:'🟢',t:'<strong>Commanding Presence Active (0:00–0:55):</strong> Open facial posture, deliberate pause-and-hold before speaking, minimal anxiety micro-expressions. Classic executive composure baseline.'},
+      {i:'🟡',t:'<strong>Credibility Dip at 3:10:</strong> Asymmetrical smile and eye block suggests uncertainty during a high-stakes statement. Audiences notice these subconsciously — coachable.'},
+    ],
+  };
+  const mfMap={
+    'Sport / Athletic':[
+      {i:'🟢',t:'<strong>Flow State Window Detected (1:00–1:45):</strong> Blink rate drops to 8/min (baseline avg: 15/min), gaze narrows to task-relevant cues only. Subject is in optimal cognitive performance zone.'},
+      {i:'🟡',t:'<strong>Attentional Disruption at 2:22:</strong> External stimulus triggers a 4-second gaze break. Focus recovers within 12 seconds — within elite benchmarks.'},
+      {i:'🔴',t:'<strong>Cognitive Overload Indicators (3:40–4:05):</strong> Rapid eye movement and lip compression consistent with information processing overload. Recommend simplifying cues in this window.'},
+      {i:'🟢',t:'<strong>Refocus Speed: Elite.</strong> Subject re-establishes attentional lock after disruption in under 8 seconds — top 15% of athletic subjects in comparable contexts.'},
+    ],
+    'Corporate / Meeting':[
+      {i:'🟢',t:'<strong>Sustained Attention (0:00–1:20):</strong> Consistent forward lean, minimal blink variance, and direct gaze indicate full cognitive engagement with the discussion.'},
+      {i:'🟡',t:'<strong>Mind-Wandering Event at 2:05:</strong> Gaze defocuses and blink rate increases for an 18-second window. Subject may have disconnected from the agenda.'},
+      {i:'🟡',t:'<strong>Late-Stage Cognitive Drift (4:10–End):</strong> Gradual reduction in nod frequency and eye contact suggests mental fatigue. High-stakes asks should be frontloaded.'},
+      {i:'🟢',t:'<strong>Peak Focus Alignment:</strong> Subject attention was highest during the first 80 seconds — schedule critical decisions within this early window.'},
+    ],
+    'Training Session':[
+      {i:'🟢',t:'<strong>High Receptivity Window (0:45–1:30):</strong> Blink rate and gaze pattern indicate peak neurological readiness for new information. Optimal window for technical instruction.'},
+      {i:'🔴',t:'<strong>Attention Fatigue Onset (3:00):</strong> Progressive decline in focused gaze indicates cognitive load approaching ceiling. Reduce instructional complexity.'},
+      {i:'🟡',t:'<strong>Distraction Cluster (2:10–2:35):</strong> Three gaze breaks within 25 seconds. Likely environmental — consider reducing background stimuli.'},
+      {i:'🟢',t:'<strong>Refocus Capacity: Strong.</strong> Each attentional lapse followed by deliberate re-engagement within 10 seconds. Strong self-regulation and coachability.'},
+    ],
+    Interview:[
+      {i:'🟢',t:'<strong>Composed Focus Under Pressure:</strong> Blink rate remains stable at 12/min throughout — well-regulated response to interview stress. Indicates strong emotional control.'},
+      {i:'🟡',t:'<strong>Processing Pause at 1:48:</strong> 3.2-second gaze aversion consistent with internal retrieval. Coach candidate to maintain soft eye contact during recall.'},
+      {i:'🟢',t:'<strong>Active Listening Confirmed:</strong> Subtle head tilt and elevated blink rate during interviewer questions indicate genuine engagement and comprehension processing.'},
+      {i:'🟡',t:'<strong>Attention Narrowing in Final Minutes:</strong> Slight reduction in gaze breadth may signal anticipatory anxiety about outcomes. Coach pre-close breathing reset.'},
+    ],
+  };
+  const bodyData=[
+    {i:'🟢',t:'<strong>Open Posture Dominant (68% of footage):</strong> Uncrossed arms, forward lean at moments of high engagement, and open palm gestures indicate psychological safety and willingness to contribute.'},
+    {i:'🟡',t:'<strong>Territorial Contraction at 2:02:</strong> Subject pulls elbows inward and reduces physical footprint — a submissive cluster correlated with reduced assertiveness under external pressure.'},
+    {i:'🟢',t:'<strong>Power Stance Baseline Strong:</strong> Shoulder alignment and feet positioning during standing sequences score 81/100 on the Validated Power Posture Index.'},
+    {i:'🔴',t:'<strong>Self-Soothing Gestures (3 instances):</strong> Neck touch, wrist grab, and arm cross detected at 1:14, 2:51, and 4:07 — each precedes a high-stakes moment.'},
+    {i:'🟢',t:'<strong>Gesture-Speech Synchrony High:</strong> Hand gestures align with verbal emphasis 84% of the time — a strong indicator of authentic, prepared communication.'},
+  ];
+  const recMap={
+    'Sport / Athletic':['Schedule a 1-on-1 debrief at the pressure cluster point (~minute 1:52). Ask open questions — let the athlete name what they felt.','Introduce a pre-performance breathing protocol (4-7-8 method) timed before high-stakes execution moments.','The peak window (1:00–1:45) is your subject\'s optimal state. Map what preceded it — sleep, nutrition, warm-up — and replicate it.','Address the micro-expression cluster privately. This is data about internal conflict, not character.'],
+    'Corporate / Meeting':['The credibility dip at 3:10 is coachable. Practice the statement with video playback so the subject can self-correct.','Brief the subject before high-stakes meetings: reset posture to an expansive baseline before entering the room.','Self-soothing gestures cluster around pressure points — identify the trigger and develop a substitute behavior.','Schedule the hardest asks within the first 45 minutes when energy and credibility read highest.'],
+    'Training Session':['Use timeline data to identify the optimal cognitive load window (minute 1–1:45) for introducing new technical content.','Reduce complexity during the stress cascade window — body language data shows diminished receptivity here.','The recovery speed is a strength. Lean into resilience-training narratives — help them develop a conscious reset trigger.'],
+    Interview:['Coach the candidate on the wrist-grab self-soothing behavior — small adjustment, outsized impact on first impressions.','The high gesture-speech synchrony is a standout strength. Let the hands move naturally — the body is communicating competence.','Practice maintaining soft eye contact during internal processing rather than looking away — it reads as evasive even when it isn\'t.'],
+  };
+
+  biSession.id = biGenId();
+  biSession.reportData = {
+    id:biSession.id, createdAt:now.toISOString(),
+    dateStr:now.toLocaleDateString('en-CA',{year:'numeric',month:'long',day:'numeric'}),
+    timeStr:now.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'}),
+    file,type,focus,ctx,mf,depth,...demo,
+    scores:[
+      {label:'Overall Score',    val:b(),                             sfx:'/100'},
+      {label:'Engagement',       val:b(),                             sfx:'%'},
+      {label:'Confidence Index', val:b(),                             sfx:'%'},
+      {label:'Stress Level',     val:Math.floor(Math.random()*28+14),sfx:'%'},
+      {label:'Focus Rating',     val:b(),                             sfx:'/100'},
+    ],
+    facial:     facialMap[focus]||facialMap['Performance'],
+    body:       bodyData,
+    mentalFocus:mf==='Include'?(mfMap[ctx]||mfMap['Sport / Athletic']):null,
+    timeline:[
+      {time:'0:00–0:55',label:'Opening / Baseline',pct:82,note:'High confidence, stable'},
+      {time:'1:00–1:45',label:'Engagement Peak',   pct:91,note:'Peak performance window'},
+      {time:'1:50–2:30',label:'Pressure Spike',    pct:54,note:'Stress markers elevated'},
+      {time:'2:35–3:20',label:'Recovery Phase',    pct:73,note:'Returning to baseline'},
+      {time:'3:25–4:10',label:'Late-Stage Focus',  pct:79,note:'Consistent performance'},
+      {time:'4:15–End', label:'Close / Wind Down', pct:69,note:'Mild fatigue indicators'},
+    ],
+    recs:recMap[ctx]||recMap['Sport / Athletic'],
+  };
+  try{ localStorage.setItem('bi_session_'+biSession.id, JSON.stringify(biSession.reportData)); }catch(e){}
+  biSaveAnalysis(biSession.reportData, false); // write to Supabase (free preview)
+}
+
+/* ── RENDER REPORT ── */
+function biRenderReport(data, locked){
+  if(!data) return;
+
+  document.getElementById('bi-report-meta').innerHTML =
+    data.dateStr+' · '+data.timeStr+'<br>'+
+    'Type: '+data.type+' · Focus: '+data.focus+'<br>'+
+    'Context: '+data.ctx+' · Depth: '+data.depth+'<br>'+
+    'Report ID: '+data.id;
+
+  document.getElementById('bi-scores').innerHTML = data.scores.map(s=>{
+    const cls=s.val>=75?'high':s.val>=50?'med':'low';
+    return '<div class="bi-score-box"><div class="bi-score-val '+cls+'">'+s.val+'<span style="font-size:1.3rem;opacity:.5">'+s.sfx+'</span></div><div class="bi-score-label">'+s.label+'</div></div>';
+  }).join('');
+
+  document.getElementById('bi-facial').innerHTML = data.facial.map(d=>
+    '<div class="bi-finding"><div class="bi-finding-icon">'+d.i+'</div><div class="bi-finding-text">'+d.t+'</div></div>'
+  ).join('');
+
+  document.getElementById('bi-body').innerHTML = data.body.map(d=>
+    '<div class="bi-finding"><div class="bi-finding-icon">'+d.i+'</div><div class="bi-finding-text">'+d.t+'</div></div>'
+  ).join('');
+
+  const focusSec = document.getElementById('bi-focus-section');
+  if(data.mentalFocus&&data.mentalFocus.length){
+    document.getElementById('bi-focus').innerHTML = data.mentalFocus.map(d=>
+      '<div class="bi-finding"><div class="bi-finding-icon">'+d.i+'</div><div class="bi-finding-text">'+d.t+'</div></div>'
+    ).join('');
+    focusSec.style.display='';
+  } else { focusSec.style.display='none'; }
+
+  document.getElementById('bi-timeline').innerHTML = data.timeline.map(e=>
+    '<div class="bi-timeline-item">'+
+    '<div class="bi-tl-row"><span>'+e.time+' — '+e.label+'</span><span>'+e.pct+'%</span></div>'+
+    '<div class="bi-tl-track"><div class="bi-tl-fill" style="width:'+e.pct+'%"></div></div>'+
+    '<div class="bi-tl-note">'+e.note+'</div></div>'
+  ).join('');
+
+  document.getElementById('bi-recs').innerHTML = data.recs.map(r=>
+    '<div class="bi-rec">'+r+'</div>'
+  ).join('');
+
+  const rep = document.getElementById('bi-report');
+  rep.style.display = 'block';
+
+  if(locked){
+    document.getElementById('bi-locked-content').classList.add('bi-locked');
+    document.getElementById('bi-lock-overlay').style.display='flex';
+    document.querySelector('.bi-report-sub').textContent='Performance Intelligence Report — Free Preview';
+    setTimeout(()=>rep.scrollIntoView({behavior:'smooth'}),200);
+    setTimeout(()=>biShowPaywall(),3200);
+  } else {
+    document.getElementById('bi-locked-content').classList.remove('bi-locked');
+    document.getElementById('bi-lock-overlay').style.display='none';
+    document.querySelector('.bi-report-sub').textContent='Performance Intelligence Report — Full Access';
+    document.getElementById('bi-pdf-cta').style.display='flex';
+    biUpdateURL(data);
+    biShowUnlockedBanner();
+    setTimeout(()=>rep.scrollIntoView({behavior:'smooth'}),200);
+  }
+}
+
+/* ── URL + BANNER ── */
+function biUpdateURL(data){
+  const p=new URLSearchParams();
+  p.set('session',data.id); p.set('paid','true');
+  p.set('type',data.type); p.set('focus',data.focus); p.set('ctx',data.ctx);
+  window.history.replaceState({sessionId:data.id},'',window.location.pathname+'?'+p.toString());
+}
+function biShowUnlockedBanner(){
+  const b=document.createElement('div');
+  b.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--success);color:var(--black);font-family:"DM Mono",monospace;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;padding:12px 28px;z-index:9998;white-space:nowrap;box-shadow:0 4px 24px rgba(26,255,140,0.4);';
+  b.textContent='✓ Full Report Unlocked — Bookmark This URL';
+  document.body.appendChild(b);
+  setTimeout(()=>{b.style.transition='opacity 0.5s';b.style.opacity='0';setTimeout(()=>b.remove(),500);},4000);
+}
+
+/* ── PAYWALL ── */
+function biShowPaywall(){
+  document.getElementById('bi-paywall-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function biClosePaywall(e){
+  if(e&&e.target!==document.getElementById('bi-paywall-modal'))return;
+  document.getElementById('bi-paywall-modal').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.getElementById('bi-paywall-modal').style.display='none';
+    document.getElementById('bi-profile-modal').style.display='none';
+    document.body.style.overflow='';
+  }
+});
+
+/* ── STRIPE ── */
+const BI_STRIPE={
+  Standard:   'https://buy.stripe.com/28EeVdf3x1dy0TP8js4c802',
+  Detailed:   'https://buy.stripe.com/dRmcN5aNh3lGeKF7fo4c800',
+  'Deep Dive':'https://buy.stripe.com/14A3cvbRl7BWeKF1V44c801',
+};
+function biGoToStripe(){
+  if(!biSession.id||!biSession.reportData){
+    window.location.href='https://buy.stripe.com/dRmcN5aNh3lGeKF7fo4c800'; return;
+  }
+  // Save pending session so we can restore it when Stripe redirects back
+  try{ localStorage.setItem('bi_pending_session', biSession.id); }catch(e){}
+
+  const depthV=parseInt(document.getElementById('bi-depth').value)||2;
+  const depth=['','Standard','Detailed','Deep Dive'][depthV]||'Detailed';
+  const url=BI_STRIPE[depth]||BI_STRIPE['Detailed'];
+  // NOTE: Stripe Payment Links ignore ?success_url — set your success URL
+  // in the Stripe dashboard to: https://grw-video-analysis-10.vercel.app/?paid=true
+  window.location.href=url;
+}
+
+/* ── PROFILE MODAL ── */
+function biDownloadPDF(){
+  if(!biSession.reportData){alert('No report found. Please run an analysis first.');return;}
+  if(biSession.profile){biGeneratePDF();return;}
+  document.getElementById('bi-profile-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function biSaveProfile(){
+  const profile={
+    firstName:document.getElementById('prof-first').value.trim(),
+    lastName: document.getElementById('prof-last').value.trim(),
+    org:      document.getElementById('prof-org').value.trim(),
+    sport:    document.getElementById('prof-sport').value.trim(),
+    source:   document.getElementById('prof-source').value.trim(),
+    savedAt:  new Date().toISOString(), sessionId:biSession.id,
+    role:    document.querySelector('#tg-role     .bi-toggle.active')?.textContent?.trim()||'',
+    industry:document.querySelector('#tg-industry .bi-toggle.active')?.textContent?.trim()||'',
+    level:   document.querySelector('#tg-level    .bi-toggle.active')?.textContent?.trim()||'',
+    orgSize: document.querySelector('#tg-orgsize  .bi-toggle.active')?.textContent?.trim()||'',
+  };
+  biSession.profile=profile;
+  try{
+    localStorage.setItem('bi_profile_'+biSession.id,JSON.stringify(profile));
+    const all=JSON.parse(localStorage.getItem('bi_profiles_all')||'[]');
+    all.push(profile); localStorage.setItem('bi_profiles_all',JSON.stringify(all));
+  }catch(e){}
+  biSaveProfileToSupa(profile); // write profile to Supabase
+  document.getElementById('bi-profile-modal').style.display='none';
+  document.body.style.overflow='';
+  biGeneratePDF();
+}
+function biSkipProfile(){
+  document.getElementById('bi-profile-modal').style.display='none';
+  document.body.style.overflow='';
+  biGeneratePDF();
+}
+
+/* ── PDF GENERATION ── */
+function biGeneratePDF(){
+  const data    = biSession.reportData;
+  const profile = biSession.profile || {};
+
+  if(!data){
+    alert('No report found. Please run an analysis first.');
+    return;
+  }
+
+  // Update all download buttons
+  document.querySelectorAll('.bi-pdf-dl-btn, .bi-dl-btn').forEach(function(b){
+    b.textContent = 'Building PDF…';
+    b.disabled = true;
+  });
+
+  // Toast notification
+  var old = document.getElementById('bi-pdf-toast');
+  if(old) old.remove();
+  var toast = document.createElement('div');
+  toast.id = 'bi-pdf-toast';
+  toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a78ff;color:#fff;font-family:"DM Mono",monospace;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:14px 32px;z-index:9999;white-space:nowrap;box-shadow:0 4px 24px rgba(26,120,255,0.5);border-radius:0;';
+  toast.textContent = 'Building your report PDF…';
+  document.body.appendChild(toast);
+
+  // Poll until jsPDF is loaded (handles async script race)
+  var attempts = 0;
+  function waitForJsPDF(){
+    attempts++;
+    if(attempts > 50){
+      cleanup('PDF library failed to load. Please refresh and try again.');
+      return;
+    }
+    if(!window.jspdf || !window.jspdf.jsPDF){
+      setTimeout(waitForJsPDF, 100);
+      return;
+    }
+    buildPDF(data, profile);
+  }
+  setTimeout(waitForJsPDF, 80);
+
+  function cleanup(errMsg){
+    document.querySelectorAll('.bi-pdf-dl-btn, .bi-dl-btn').forEach(function(b){
+      b.textContent = '↓ Download Report';
+      b.disabled = false;
+    });
+    var t = document.getElementById('bi-pdf-toast');
+    if(t) t.remove();
+    if(errMsg) alert(errMsg);
+  }
+
+  function buildPDF(data, profile){
+    try{
+      var jsPDF = window.jspdf.jsPDF;
+      var doc   = new jsPDF({unit:'pt', format:'letter'});
+      var PW=612, PH=792;
+
+      function sf(c){ doc.setFillColor(c[0],c[1],c[2]); }
+      function sd(c){ doc.setDrawColor(c[0],c[1],c[2]); }
+      function st(c){ doc.setTextColor(c[0],c[1],c[2]); }
+      function fr(x,y,w,h){ doc.rect(x,y,w,h,'F'); }
+
+      var C = {
+        bg:[4,7,13], panel:[14,22,36], panel2:[17,28,46],
+        blue:[26,120,255], cyan:[0,229,255], orange:[255,92,26], gold:[255,201,64],
+        green:[26,255,140], white:[255,255,255],
+        t1:[255,255,255], t2:[184,205,232], t3:[106,138,170], border:[31,48,80]
+      };
+
+      function pageFooter(n){
+        sd(C.border); doc.setLineWidth(0.5); doc.line(36,PH-32,PW-36,PH-32);
+        doc.setFontSize(7); doc.setFont('helvetica','normal'); st(C.t3);
+        doc.text('BOOST INNOVATION · boostinnovation.ca · Confidential', 44, PH-16);
+        doc.text('Page '+n, PW-44, PH-16, {align:'right'});
+      }
+
+      // ── COVER PAGE ──
+      sf(C.bg); fr(0,0,PW,PH);
+      sf(C.panel); fr(0,0,PW,40);
+      sf(C.blue);  fr(0,0,PW,3);
+      doc.setFontSize(10); doc.setFont('helvetica','bold'); st(C.white);
+      doc.text('BOOST', 44, 26);
+      st(C.cyan);
+      doc.text('INNOVATION', 44+doc.getTextWidth('BOOST')+5, 26);
+
+      // Grid
+      sd(C.border); doc.setLineWidth(0.3);
+      for(var x=0;x<PW;x+=40) doc.line(x,0,x,PH);
+      for(var y=0;y<PH;y+=40) doc.line(0,y,PW,y);
+
+      // Glows
+      for(var i=5;i>0;i--){ doc.setFillColor(0,229,255,i*3);   doc.ellipse(PW-80,100,160-i*18,140-i*16,'F'); }
+      for(var i=4;i>0;i--){ doc.setFillColor(255,92,26,i*2);   doc.ellipse(80,PH-100,120-i*14,100-i*12,'F'); }
+
+      doc.setFontSize(7); doc.setFont('helvetica','normal'); st(C.cyan);
+      doc.text('PERFORMANCE INTELLIGENCE REPORT', 44, 280);
+
+      doc.setFontSize(44); doc.setFont('helvetica','bold'); st(C.white);
+      doc.text('READ THE', 44, 330);
+      st(C.cyan);  doc.text('ROOM.',       44, 380);
+      st(C.white); doc.text('WIN THE FIELD.', 44, 430);
+
+      sd(C.border); doc.setLineWidth(0.5); doc.line(44,450,PW-44,450);
+
+      var analyst = profile.firstName ? (profile.firstName+' '+profile.lastName).trim() : '—';
+      var metaRows = [
+        ['REPORT ID',  data.id],
+        ['GENERATED',  data.dateStr+' · '+data.timeStr],
+        ['ANALYST',    analyst],
+        ['ORG',        profile.org   || '—'],
+        ['SUBJECT',    data.file     || 'Uploaded footage'],
+        ['TYPE',       data.type+' · '+data.focus],
+        ['CONTEXT',    data.ctx+' · '+data.depth],
+      ];
+      var my = 472;
+      metaRows.forEach(function(row){
+        doc.setFontSize(7.5); doc.setFont('helvetica','bold');   st(C.t3); doc.text(row[0], 44, my);
+        doc.setFontSize(7.5); doc.setFont('helvetica','normal'); st(C.t2); doc.text(String(row[1]), 180, my);
+        my += 18;
+      });
+
+      // Score preview on cover
+      doc.setFontSize(7); doc.setFont('helvetica','bold'); st(C.t3);
+      doc.text('PERFORMANCE SCORES', 44, my+16); my+=28;
+      var sw = (PW-88-(data.scores.length-1)*6)/data.scores.length;
+      data.scores.forEach(function(s,i){
+        var bx = 44+i*(sw+6);
+        sf(C.panel2); fr(bx, my, sw, 56);
+        var v = parseFloat(s.val);
+        var col = v>=75 ? C.green : v>=50 ? C.gold : C.orange;
+        st(col); doc.setFontSize(22); doc.setFont('helvetica','bold');
+        doc.text(String(s.val)+(s.sfx||''), bx+sw/2, my+32, {align:'center'});
+        doc.setFontSize(6); doc.setFont('helvetica','normal'); st(C.t3);
+        doc.text(doc.splitTextToSize(s.label, sw-8), bx+sw/2, my+46, {align:'center'});
+      });
+      pageFooter(1);
+
+      // ── REPORT PAGES ──
+      doc.addPage();
+      var pn = 2;
+
+      function newPage(){
+        sf(C.bg); fr(0,0,PW,PH);
+        sf(C.blue); fr(0,0,PW,3);
+        sf(C.panel); fr(0,2,PW,36);
+        doc.setFontSize(9); doc.setFont('helvetica','bold'); st(C.white);
+        doc.text('BOOST INNOVATION', 44, 26);
+        st(C.cyan);
+        doc.text('Performance Intelligence Report', 44+doc.getTextWidth('BOOST INNOVATION')+6, 26);
+        st(C.t3); doc.text(data.id, PW-44, 26, {align:'right'});
+        return 58;
+      }
+
+      function checkPage(cy, need){
+        if(cy+need > PH-50){ pageFooter(pn); doc.addPage(); pn++; return newPage(); }
+        return cy;
+      }
+
+      function sectionHead(label, cy){
+        cy = checkPage(cy, 30);
+        sf(C.panel); fr(36,cy,PW-72,22);
+        sf(C.cyan);  fr(36,cy,3,22);
+        doc.setFontSize(7.5); doc.setFont('helvetica','bold'); st(C.cyan);
+        doc.text(label.toUpperCase(), 46, cy+15);
+        return cy+34;
+      }
+
+      function findingRow(icon, text, cy){
+        var clean = text.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+        var lines = doc.splitTextToSize(clean, PW-108);
+        var rh = Math.max(30, lines.length*12+14);
+        cy = checkPage(cy, rh);
+        sf(C.panel); fr(36,cy,PW-72,rh);
+        st(C.t2); doc.setFontSize(9); doc.setFont('helvetica','normal');
+        doc.text(icon||'•', 48, cy+rh/2+4);
+        st(C.t1); doc.text(lines, 64, cy+13);
+        return cy+rh+4;
+      }
+
+      var y = newPage();
+
+      // Scores
+      y = sectionHead('Performance Scores', y);
+      var sw2 = (PW-88-(data.scores.length-1)*5)/data.scores.length;
+      data.scores.forEach(function(s,i){
+        var bx = 44+i*(sw2+5);
+        sf(C.panel2); fr(bx,y,sw2,52);
+        var v=parseFloat(s.val), col=v>=75?C.green:v>=50?C.gold:C.orange;
+        st(col); doc.setFontSize(20); doc.setFont('helvetica','bold');
+        doc.text(String(s.val)+(s.sfx||''), bx+sw2/2, y+30, {align:'center'});
+        doc.setFontSize(6); doc.setFont('helvetica','normal'); st(C.t3);
+        doc.text(doc.splitTextToSize(s.label, sw2-8), bx+sw2/2, y+44, {align:'center'});
+      }); y+=66;
+
+      // Facial
+      if(data.facial && data.facial.length){
+        y = sectionHead('Facial Expression Analysis', y);
+        data.facial.forEach(function(f){ y=findingRow(f.i,f.t,y); }); y+=8;
+      }
+
+      // Body
+      if(data.body && data.body.length){
+        y = sectionHead('Body Language Signals', y);
+        data.body.forEach(function(f){ y=findingRow(f.i,f.t,y); }); y+=8;
+      }
+
+      // Mental Focus
+      if(data.mentalFocus && data.mentalFocus.length){
+        y = sectionHead('Mental Focus & Concentration', y);
+        data.mentalFocus.forEach(function(f){ y=findingRow(f.i,f.t,y); }); y+=8;
+      }
+
+      // Timeline
+      if(data.timeline && data.timeline.length){
+        y = sectionHead('Performance Timeline', y);
+        data.timeline.forEach(function(item){
+          y = checkPage(y,42);
+          sf(C.panel); fr(36,y,PW-72,38);
+          doc.setFontSize(8); doc.setFont('helvetica','bold'); st(C.t1);
+          doc.text(item.label, 46, y+13);
+          st(C.cyan); doc.text(item.time, PW-46, y+13, {align:'right'});
+          sf(C.panel2); fr(46,y+18,PW-92,5);
+          sf(C.blue);   fr(46,y+18,((PW-92)*item.pct)/100,5);
+          doc.setFontSize(7); doc.setFont('helvetica','normal'); st(C.t3);
+          doc.text(item.note||'', 46, y+33);
+          y+=46;
+        }); y+=8;
+      }
+
+      // Recommendations
+      if(data.recs && data.recs.length){
+        y = checkPage(y, 50);
+        sf(C.panel2); fr(36,y,PW-72,24);
+        sf(C.orange);  fr(36,y,PW-72,0.5);
+        doc.setFontSize(8.5); doc.setFont('helvetica','bold'); st(C.gold);
+        doc.text('BOOST COACHING RECOMMENDATIONS', 46, y+16); y+=28;
+        data.recs.forEach(function(rec){
+          y = checkPage(y,34);
+          var lines = doc.splitTextToSize(rec, PW-110);
+          doc.setFontSize(8.5); doc.setFont('helvetica','bold'); st(C.blue);
+          doc.text('>', 46, y+12);
+          doc.setFont('helvetica','normal'); st(C.t2);
+          doc.text(lines, 62, y+12);
+          y += lines.length*13+10;
+        });
+      }
+
+      pageFooter(pn);
+
+      // Save
+      var namePart = profile.firstName ? '-'+profile.firstName+'-'+profile.lastName : '';
+      doc.save('Boost-Intelligence-Report'+namePart+'-'+data.id+'.pdf');
+
+      // Success toast
+      var t = document.getElementById('bi-pdf-toast');
+      if(t){ t.style.background='#1aff8c'; t.style.color='#04070d'; t.textContent='✓ PDF Downloaded!'; setTimeout(function(){t.remove();},3000); }
+
+      cleanup(null);
+
+    }catch(err){
+      console.error('PDF build error:', err);
+      cleanup('PDF generation failed: '+err.message);
+    }
+  }
+}
+
+/* ── POST-PAYMENT PDF TRIGGER ── */
+// Called automatically when user returns from Stripe.
+// Shows profile modal so their name goes on the PDF cover,
+// then generates and downloads the full branded report.
+function biTriggerPostPaymentPDF() {
+  if (!biSession.reportData) return;
+
+  // If they already filled the profile modal in this session, skip straight to PDF
+  if (biSession.profile) {
+    biGeneratePDF();
+    return;
+  }
+
+  // Otherwise show profile modal with a clear message that the PDF is about to generate
+  const modal = document.getElementById('bi-profile-modal');
+  const tag   = modal.querySelector('.bi-profile-tag');
+  const title = modal.querySelector('.bi-profile-title');
+  const sub   = modal.querySelector('.bi-profile-sub');
+
+  if (tag)   tag.textContent   = 'Payment confirmed — personalise your report';
+  if (title) title.textContent = 'Your PDF is ready to build.';
+  if (sub)   sub.textContent   = 'Add your name and we'll put it on the cover of your branded report. Takes 5 seconds.';
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+/* ── INIT — Stripe return handler ── */
+(function biInit(){
+  const params  = new URLSearchParams(window.location.search);
+  const paid    = params.get('paid');
+
+  // Stripe redirects back with ?paid=true (set this in your Stripe dashboard)
+  // We recover the session from bi_pending_session in localStorage
+  if(paid === 'true'){
+    try{
+      const pendingId = localStorage.getItem('bi_pending_session');
+      if(pendingId){
+        const saved = localStorage.getItem('bi_session_' + pendingId);
+        if(saved){
+          const data = JSON.parse(saved);
+          biSession.id         = pendingId;
+          biSession.reportData = data;
+          biSession.paid       = true;
+          localStorage.removeItem('bi_pending_session'); // clean up
+          biSaveAnalysis(data, true); // mark as paid in Supabase
+          setTimeout(()=>{
+            document.getElementById('bi-try-free')?.scrollIntoView({behavior:'smooth'});
+            biRenderReport(data, false);
+            // After report renders, show profile modal then auto-generate PDF
+            setTimeout(()=>{ biTriggerPostPaymentPDF(); }, 900);
+          }, 600);
+          return;
+        }
+      }
+    }catch(e){ console.warn('Session restore failed:', e); }
+
+    // Fallback — paid but no session found (different device or cleared storage)
+    setTimeout(()=>{
+      const n = document.createElement('div');
+      n.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel2);border:2px solid var(--boost-orange);color:var(--text-secondary);font-family:"DM Sans",sans-serif;font-size:0.88rem;padding:16px 24px;z-index:9998;max-width:480px;text-align:center;line-height:1.6;';
+      n.innerHTML = '<strong style="color:var(--boost-orange);">Payment received — thank you!</strong><br>Please re-upload your video on this device to generate your full unlocked report.';
+      document.body.appendChild(n);
+      setTimeout(()=>n.remove(),12000);
+    }, 800);
+  }
+})();
+</script>
+</body>
+</html>
